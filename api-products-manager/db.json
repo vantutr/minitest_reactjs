@@ -1,0 +1,82 @@
+{
+  "categories": [
+    {
+      "id": "1",
+      "name": "Điện thoại"
+    },
+    {
+      "id": "2",
+      "name": "Laptop"
+    },
+    {
+      "id": "3",
+      "name": "Phụ kiện"
+    }
+  ],
+  "products": [
+    {
+      "id": "1",
+      "name": "iPhone 15 Pro Max",
+      "description": "Điện thoại cao cấp nhất từ Apple năm 2023.",
+      "price": 34000000,
+      "image": "https://cdn2.cellphones.com.vn/insecure/rs:fill:358:358/q:90/plain/https://cellphones.com.vn/media/catalog/product/i/p/iphone-15-pro-max_2__5_2_1_1.jpg",
+      "categoryId": 1
+    },
+    {
+      "id": "2",
+      "name": "Samsung Galaxy S24 Ultra",
+      "description": "Flagship Android với bút S-Pen và camera đỉnh cao.",
+      "price": 31500000,
+      "image": "https://samcenter.vn/images/thumbs/0006347_samsung-galaxy-s24-ultra_420.jpeg",
+      "categoryId": 1
+    },
+    {
+      "id": "3",
+      "name": "MacBook Pro M3",
+      "description": "Laptop mạnh mẽ cho công việc đồ họa và lập trình.",
+      "price": 45000000,
+      "image": "https://cdnv2.tgdd.vn/mwg-static/tgdd/Products/Images/44/318230/apple-macbook-pro-14-inch-m3-pro-2023-111124-040015-777-600x600.jpg",
+      "categoryId": 2
+    },
+    {
+      "id": "4",
+      "name": "Dell XPS 15",
+      "description": "Laptop Windows cao cấp với màn hình đẹp.",
+      "price": 42000000,
+      "image": "https://bizweb.dktcdn.net/thumb/1024x1024/100/410/941/products/46395-laptop-dell-xps-15-9530-71015716-4.jpg?v=1704505945447",
+      "categoryId": 2
+    },
+    {
+      "id": "5",
+      "name": "Tai nghe Sony WH-1000XM5",
+      "description": "Tai nghe chống ồn chủ động hàng đầu.",
+      "price": 7500000,
+      "image": "https://product.hstatic.net/1000340975/product/1652444420_1706394_82065d51a6154d8eb6f825eda2c07536_master.jpg",
+      "categoryId": 3
+    },
+    {
+      "id": "6",
+      "name": "Chuột Logitech MX Master 3S",
+      "description": "Chuột công thái học cho người làm việc chuyên nghiệp.",
+      "price": 2500000,
+      "image": "https://bizweb.dktcdn.net/thumb/medium/100/433/921/products/chuot-logi-tech-mx-master-3-wireless-1.jpg?v=1708420716470",
+      "categoryId": 3
+    },
+    {
+      "id": "7",
+      "name": "Google Pixel 8 Pro",
+      "description": "Điện thoại với camera AI và trải nghiệm Android thuần túy.",
+      "price": 26000000,
+      "image": "https://placehold.co/600x400/green/white?text=Pixel+8",
+      "categoryId": 1
+    },
+    {
+      "id": "8",
+      "name": "Asus ROG Zephyrus G14",
+      "description": "Laptop gaming nhỏ gọn nhưng mạnh mẽ.",
+      "price": 38000000,
+      "image": "https://dlcdnwebimgs.asus.com/gain/D366E1B6-C6E2-41B1-BF53-EF909B21FF09",
+      "categoryId": 2
+    }
+  ]
+}
