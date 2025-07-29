@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Container, Button, Table, Modal } from "react-bootstrap";
 import axiosClient from "../api/axiosClient";
+import { FiPlus, FiEdit, FiTrash2, FiTag } from "react-icons/fi";
 
 const CategoryList = () => {
   const [categories, setCategories] = useState([]);
@@ -43,49 +44,63 @@ const CategoryList = () => {
   };
 
   return (
-    <Container>
-      <div className="d-flex justify-content-between align-items-center my-4">
-        <h1>Quản lý Danh mục</h1>
-        <Link to="/categories/add">
-          <Button variant="primary">Thêm danh mục mới</Button>
-        </Link>
+    <Container fluid="xl">
+      <div className="main-content">
+        <div className="page-header">
+          <h1>Quản lý Danh mục</h1>
+          <Link to="/categories/add">
+            <Button variant="primary" className="btn-icon">
+              <FiPlus /> Thêm danh mục
+            </Button>
+          </Link>
+        </div>
+
+        <div className="table-responsive">
+          <Table hover>
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Tên danh mục</th>
+                <th className="text-center">Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              {categories.map((category) => (
+                <tr key={category.id}>
+                  <td>#{category.id}</td>
+                  <td>
+                    <FiTag className="me-2 text-muted" />
+                    <strong>{category.name}</strong>
+                  </td>
+                  <td className="text-center">
+                    <Link to={`/categories/edit/${category.id}`}>
+                      <Button
+                        variant="link"
+                        className="text-warning btn-action"
+                      >
+                        <FiEdit />
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="link"
+                      className="text-danger btn-action"
+                      onClick={() => handleShowDeleteModal(category)}
+                    >
+                      <FiTrash2 />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
       </div>
 
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Tên danh mục</th>
-            <th className="text-center">Hành động</th>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.map((category) => (
-            <tr key={category.id}>
-              <td>{category.id}</td>
-              <td>{category.name}</td>
-              <td className="text-center">
-                <Link to={`/categories/edit/${category.id}`}>
-                  <Button variant="warning" size="sm" className="me-2">
-                    Sửa
-                  </Button>
-                </Link>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleShowDeleteModal(category)}
-                >
-                  Xóa
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-
-      <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+      <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Xác nhận Xóa</Modal.Title>
+          <Modal.Title>
+            <FiTrash2 className="me-2" /> Xác nhận Xóa
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Bạn có chắc chắn muốn xóa danh mục{" "}

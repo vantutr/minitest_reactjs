@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { Container, Form, Button, Card } from "react-bootstrap";
+import { Container, Form, Button, Card, Row, Col } from "react-bootstrap";
 import axiosClient from "../api/axiosClient";
+import { FiSave, FiXCircle, FiArrowLeft } from "react-icons/fi";
 
 const ProductForm = () => {
   const { id } = useParams();
@@ -26,9 +27,7 @@ const ProductForm = () => {
         console.error("Lỗi khi lấy danh mục:", error);
       }
     };
-
     fetchCategories();
-
     if (isEditMode) {
       const fetchProduct = async () => {
         try {
@@ -65,81 +64,105 @@ const ProductForm = () => {
   };
 
   return (
-    <Container>
-      <Card>
-        <Card.Header as="h2">
-          {isEditMode ? "Chỉnh sửa Sản phẩm" : "Thêm Sản phẩm mới"}
-        </Card.Header>
-        <Card.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Tên sản phẩm</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={product.name}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Mô tả</Form.Label>
-              <Form.Control
-                as="textarea"
-                rows={3}
-                name="description"
-                value={product.description}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Giá</Form.Label>
-              <Form.Control
-                type="number"
-                name="price"
-                value={product.price}
-                onChange={handleChange}
-                required
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>URL Hình ảnh</Form.Label>
-              <Form.Control
-                type="text"
-                name="image"
-                value={product.image}
-                onChange={handleChange}
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Danh mục</Form.Label>
-              <Form.Select
-                name="categoryId"
-                value={product.categoryId}
-                onChange={handleChange}
-                required
-              >
-                <option value="">Chọn một danh mục</option>
-                {categories.map((cat) => (
-                  <option key={cat.id} value={cat.id}>
-                    {cat.name}
-                  </option>
-                ))}
-              </Form.Select>
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Lưu
-            </Button>
-            <Button
-              variant="secondary"
-              className="ms-2"
-              onClick={() => navigate("/products")}
-            >
-              Hủy
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
+    <Container fluid="xl">
+      <div className="main-content">
+        <Button
+          variant="light"
+          className="mb-4"
+          onClick={() => navigate("/products")}
+        >
+          <FiArrowLeft /> Quay lại danh sách
+        </Button>
+        <Card className="form-card">
+          <Card.Header>
+            <h2>{isEditMode ? "Chỉnh sửa Sản phẩm" : "Thêm Sản phẩm mới"}</h2>
+          </Card.Header>
+          <Card.Body>
+            <Form onSubmit={handleSubmit}>
+              <Row>
+                <Col md={8}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Tên sản phẩm</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="name"
+                      value={product.name}
+                      onChange={handleChange}
+                      required
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Mô tả</Form.Label>
+                    <Form.Control
+                      as="textarea"
+                      rows={5}
+                      name="description"
+                      value={product.description}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                </Col>
+                <Col md={4}>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Giá</Form.Label>
+                    <Form.Control
+                      type="number"
+                      name="price"
+                      value={product.price}
+                      onChange={handleChange}
+                      required
+                    />
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>Danh mục</Form.Label>
+                    <Form.Select
+                      name="categoryId"
+                      value={product.categoryId}
+                      onChange={handleChange}
+                      required
+                    >
+                      <option value="">Chọn một danh mục</option>
+                      {categories.map((cat) => (
+                        <option key={cat.id} value={cat.id}>
+                          {cat.name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Form.Group>
+                  <Form.Group className="mb-3">
+                    <Form.Label>URL Hình ảnh</Form.Label>
+                    <Form.Control
+                      type="text"
+                      name="image"
+                      value={product.image}
+                      onChange={handleChange}
+                    />
+                  </Form.Group>
+                  {product.image && (
+                    <img
+                      src={product.image}
+                      alt="Preview"
+                      className="img-fluid rounded mb-3"
+                    />
+                  )}
+                </Col>
+              </Row>
+              <div className="mt-4">
+                <Button variant="primary" type="submit" className="btn-icon">
+                  <FiSave /> {isEditMode ? "Cập nhật" : "Lưu"}
+                </Button>
+                <Button
+                  variant="secondary"
+                  className="ms-2 btn-icon"
+                  onClick={() => navigate("/products")}
+                >
+                  <FiXCircle /> Hủy
+                </Button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+      </div>
     </Container>
   );
 };

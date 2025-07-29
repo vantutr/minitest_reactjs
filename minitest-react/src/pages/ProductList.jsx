@@ -12,6 +12,14 @@ import {
   Modal,
 } from "react-bootstrap";
 import axiosClient from "../api/axiosClient";
+import {
+  FiPlus,
+  FiSearch,
+  FiEdit,
+  FiTrash2,
+  FiChevronUp,
+  FiChevronDown,
+} from "react-icons/fi";
 
 const ProductList = () => {
   const [products, setProducts] = useState([]);
@@ -76,7 +84,6 @@ const ProductList = () => {
 
   const processedProducts = useMemo(() => {
     let filteredProducts = [...products];
-
     if (searchTerm) {
       filteredProducts = filteredProducts.filter(
         (product) =>
@@ -84,7 +91,6 @@ const ProductList = () => {
           product.id.toString().includes(searchTerm)
       );
     }
-
     filteredProducts.sort((a, b) => {
       if (a[sortConfig.key] < b[sortConfig.key]) {
         return sortConfig.direction === "asc" ? -1 : 1;
@@ -94,7 +100,6 @@ const ProductList = () => {
       }
       return 0;
     });
-
     return filteredProducts;
   }, [products, searchTerm, sortConfig]);
 
@@ -106,6 +111,11 @@ const ProductList = () => {
     setSortConfig({ key, direction });
   };
 
+  const SortIcon = ({ columnKey }) => {
+    if (sortConfig.key !== columnKey) return null;
+    return sortConfig.direction === "asc" ? <FiChevronUp /> : <FiChevronDown />;
+  };
+
   const indexOfLastProduct = currentPage * productsPerPage;
   const indexOfFirstProduct = indexOfLastProduct - productsPerPage;
   const currentProducts = processedProducts.slice(
@@ -113,111 +123,114 @@ const ProductList = () => {
     indexOfLastProduct
   );
   const totalPages = Math.ceil(processedProducts.length / productsPerPage);
-
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
   return (
-    <Container>
-      <h1 className="my-4">Quản lý Sản phẩm</h1>
-      <Row className="mb-3">
-        <Col md={8}>
-          <InputGroup>
-            <Form.Control
-              placeholder="Tìm kiếm theo tên hoặc ID..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
-          </InputGroup>
-        </Col>
-        <Col md={4} className="text-end">
+    <Container fluid="xl">
+      <div className="main-content">
+        <div className="page-header">
+          <h1>Quản lý Sản phẩm</h1>
           <Link to="/products/add">
-            <Button variant="primary">Thêm sản phẩm mới</Button>
+            <Button variant="primary" className="btn-icon">
+              <FiPlus /> Thêm sản phẩm
+            </Button>
           </Link>
-        </Col>
-      </Row>
-
-      <Table striped bordered hover responsive>
-        <thead>
-          <tr>
-            <th onClick={() => requestSort("id")}>
-              ID{" "}
-              {sortConfig.key === "id"
-                ? sortConfig.direction === "asc"
-                  ? "▲"
-                  : "▼"
-                : ""}
-            </th>
-            <th onClick={() => requestSort("name")}>
-              Tên sản phẩm{" "}
-              {sortConfig.key === "name"
-                ? sortConfig.direction === "asc"
-                  ? "▲"
-                  : "▼"
-                : ""}
-            </th>
-            <th>Hình ảnh</th>
-            <th onClick={() => requestSort("price")}>
-              Giá{" "}
-              {sortConfig.key === "price"
-                ? sortConfig.direction === "asc"
-                  ? "▲"
-                  : "▼"
-                : ""}
-            </th>
-            <th>Danh mục</th>
-            <th>Hành động</th>
-          </tr>
-        </thead>
-        <tbody>
-          {currentProducts.map((product) => (
-            <tr key={product.id}>
-              <td>{product.id}</td>
-              <td>{product.name}</td>
-              <td>
-                <img
-                  src={product.image}
-                  alt={product.name}
-                  style={{ width: "100px", height: "auto" }}
-                />
-              </td>
-              <td>{product.price.toLocaleString("vi-VN")} VNĐ</td>
-              <td>{categories[product.categoryId] || "N/A"}</td>
-              <td>
-                <Link to={`/products/edit/${product.id}`}>
-                  <Button variant="warning" size="sm" className="me-2">
-                    Sửa
-                  </Button>
-                </Link>
-                <Button
-                  variant="danger"
-                  size="sm"
-                  onClick={() => handleShowDeleteModal(product)}
+        </div>
+        <Row className="mb-4">
+          <Col md={6}>
+            <InputGroup>
+              <InputGroup.Text>
+                <FiSearch />
+              </InputGroup.Text>
+              <Form.Control
+                placeholder="Tìm kiếm theo tên hoặc ID..."
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+            </InputGroup>
+          </Col>
+        </Row>
+        <div className="table-responsive">
+          <Table hover>
+            <thead>
+              <tr>
+                <th onClick={() => requestSort("id")}>
+                  ID <SortIcon columnKey="id" />
+                </th>
+                <th onClick={() => requestSort("name")}>
+                  Tên sản phẩm <SortIcon columnKey="name" />
+                </th>
+                <th>Hình ảnh</th>
+                <th onClick={() => requestSort("price")}>
+                  Giá <SortIcon columnKey="price" />
+                </th>
+                <th>Danh mục</th>
+                <th className="text-center">Hành động</th>
+              </tr>
+            </thead>
+            <tbody>
+              {currentProducts.map((product) => (
+                <tr key={product.id}>
+                  <td>#{product.id}</td>
+                  <td>
+                    <strong>{product.name}</strong>
+                  </td>
+                  <td>
+                    <img
+                      src={product.image}
+                      alt={product.name}
+                      className="product-image"
+                    />
+                  </td>
+                  <td>{product.price.toLocaleString("vi-VN")} VNĐ</td>
+                  <td>
+                    <span className="badge bg-light text-dark">
+                      {categories[product.categoryId] || "N/A"}
+                    </span>
+                  </td>
+                  <td className="text-center">
+                    <Link to={`/products/edit/${product.id}`}>
+                      <Button
+                        variant="link"
+                        className="text-warning btn-action"
+                      >
+                        <FiEdit />
+                      </Button>
+                    </Link>
+                    <Button
+                      variant="link"
+                      className="text-danger btn-action"
+                      onClick={() => handleShowDeleteModal(product)}
+                    >
+                      <FiTrash2 />
+                    </Button>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </Table>
+        </div>
+        {totalPages > 1 && (
+          <div className="d-flex justify-content-center mt-4">
+            <Pagination>
+              {[...Array(totalPages).keys()].map((number) => (
+                <Pagination.Item
+                  key={number + 1}
+                  active={number + 1 === currentPage}
+                  onClick={() => paginate(number + 1)}
                 >
-                  Xóa
-                </Button>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </Table>
-
-      {totalPages > 1 && (
-        <Pagination className="justify-content-center">
-          {[...Array(totalPages).keys()].map((number) => (
-            <Pagination.Item
-              key={number + 1}
-              active={number + 1 === currentPage}
-              onClick={() => paginate(number + 1)}
-            >
-              {number + 1}
-            </Pagination.Item>
-          ))}
-        </Pagination>
-      )}
-
-      <Modal show={showDeleteModal} onHide={handleCloseDeleteModal}>
+                  {number + 1}
+                </Pagination.Item>
+              ))}
+            </Pagination>
+          </div>
+        )}
+      </div>
+      <Modal show={showDeleteModal} onHide={handleCloseDeleteModal} centered>
         <Modal.Header closeButton>
-          <Modal.Title>Xác nhận Xóa</Modal.Title>
+          <Modal.Title>
+            <FiTrash2 className="me-2" /> Xác nhận Xóa
+          </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           Bạn có chắc chắn muốn xóa sản phẩm{" "}

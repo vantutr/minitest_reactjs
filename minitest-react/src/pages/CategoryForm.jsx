@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { Container, Form, Button, Card } from "react-bootstrap";
 import axiosClient from "../api/axiosClient";
+import { FiSave, FiXCircle, FiArrowLeft } from "react-icons/fi";
 
 const CategoryForm = () => {
   const { id } = useParams();
@@ -31,6 +32,7 @@ const CategoryForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (!category.name.trim()) {
+      // Thay thế alert bằng một cơ chế tốt hơn trong tương lai (ví dụ: react-toastify)
       alert("Tên danh mục không được để trống!");
       return;
     }
@@ -48,37 +50,48 @@ const CategoryForm = () => {
   };
 
   return (
-    <Container>
-      <Card>
-        <Card.Header as="h2">
-          {isEditMode ? "Chỉnh sửa Danh mục" : "Thêm Danh mục mới"}
-        </Card.Header>
-        <Card.Body>
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Label>Tên danh mục</Form.Label>
-              <Form.Control
-                type="text"
-                name="name"
-                value={category.name}
-                onChange={handleChange}
-                required
-                placeholder="Nhập tên danh mục..."
-              />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Lưu
-            </Button>
-            <Button
-              variant="secondary"
-              className="ms-2"
-              onClick={() => navigate("/categories")}
-            >
-              Hủy
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
+    <Container fluid="xl">
+      <div className="main-content">
+        <Button
+          variant="light"
+          className="mb-4"
+          onClick={() => navigate("/categories")}
+        >
+          <FiArrowLeft /> Quay lại danh sách
+        </Button>
+        <Card className="form-card">
+          <Card.Header>
+            <h2>{isEditMode ? "Chỉnh sửa Danh mục" : "Thêm Danh mục mới"}</h2>
+          </Card.Header>
+          <Card.Body>
+            <Form onSubmit={handleSubmit}>
+              <Form.Group className="mb-3">
+                <Form.Label>Tên danh mục</Form.Label>
+                <Form.Control
+                  type="text"
+                  name="name"
+                  value={category.name}
+                  onChange={handleChange}
+                  required
+                  placeholder="Ví dụ: Điện thoại, Laptop..."
+                />
+              </Form.Group>
+              <div className="mt-4">
+                <Button variant="primary" type="submit" className="btn-icon">
+                  <FiSave /> {isEditMode ? "Cập nhật" : "Lưu"}
+                </Button>
+                <Button
+                  variant="secondary"
+                  className="ms-2 btn-icon"
+                  onClick={() => navigate("/categories")}
+                >
+                  <FiXCircle /> Hủy
+                </Button>
+              </div>
+            </Form>
+          </Card.Body>
+        </Card>
+      </div>
     </Container>
   );
 };

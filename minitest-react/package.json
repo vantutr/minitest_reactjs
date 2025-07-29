@@ -2,20 +2,25 @@
   "name": "minitest-react",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://vantutr.github.io/minitest_reactjs",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d dist",
     "preview": "vite preview"
   },
   "dependencies": {
     "axios": "^1.11.0",
     "bootstrap": "^5.3.7",
+    "gh-pages": "^6.3.0",
     "json-server": "^1.0.0-beta.3",
     "react": "^19.1.0",
     "react-bootstrap": "^2.10.10",
     "react-dom": "^19.1.0",
+    "react-icons": "^5.5.0",
     "react-router-dom": "^7.7.1"
   },
   "devDependencies": {
